@@ -151,12 +151,16 @@ class SearchParamsBuilder {
                 $this->setCustomParam($key, $value);
             }
         }
+
+        if (isset($opts['reRankSize'])) {
+            $this->setReRankSize($opts['reRankSize']);
+        }
     }
 
     /**
      * 设置返回结果的偏移量。
      *
-     * @param int $start 偏移量。
+     * @param int $start 偏移量，范围[0,5000]。
      * @return void
      */
     public function setStart($start) {
@@ -166,7 +170,7 @@ class SearchParamsBuilder {
     /**
      * 设置返回结果的条数。
      *
-     * @param int $hits 返回结果的条数。
+     * @param int $hits 返回结果的条数，范围[0,500]。
      * @return void
      */
     public function setHits($hits) {
@@ -176,7 +180,7 @@ class SearchParamsBuilder {
     /**
      * 设置返回结果的格式。
      *
-     * @param String $format 返回结果的格式，有json。
+     * @param String $format 返回结果的格式，有json、fulljson和xml格式。
      * @return void
      */
     public function setFormat($format) {
@@ -232,6 +236,16 @@ class SearchParamsBuilder {
      */
     public function setRouteValue($routeValue) {
         $this->searchParams->config->routeValue = $routeValue;
+    }
+
+    /**
+     * 设置参与精排个数。
+     *
+     * @param int $reRankSize 参与精排个数，范围[0,2000]。
+     * @return void
+     */
+    public function setReRankSize($reRankSize) {
+        $this->searchParams->rank->reRankSize = $reRankSize;
     }
 
     /**
