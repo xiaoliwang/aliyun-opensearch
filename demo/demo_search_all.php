@@ -10,6 +10,10 @@ $searchClient = new SearchClient($client);
 $params = new SearchParamsBuilder();
 $params->setStart(0);
 $params->setHits(20);
+
+//设置参与精排个数，不设置默认200
+//$params->setReRankSize(200);
+
 //设置应用名称
 $params->setAppName('替换为应用名');
 //设置查询query
@@ -21,6 +25,8 @@ $params->addSort('id', SearchParamsBuilder::SORT_DECREASE);
 $params->addSort('RANK', SearchParamsBuilder::SORT_DECREASE);
 //设置文档过滤条件
 $params->setFilter('id>0');
+
+
 //添加distinct子句
 $params->addDistinct(
     array('key' => 'cate_id', 'distTimes' => 1, 'distCount' => 2, 'reserved' => 'false')
