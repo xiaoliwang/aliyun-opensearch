@@ -32,6 +32,7 @@ use OpenSearch\Generated\Search\Sort;
 use OpenSearch\Generated\Search\SortField;
 use OpenSearch\Generated\Search\Summary;
 use OpenSearch\Generated\Search\DeepPaging;
+use OpenSearch\Generated\Search\Abtest;
 
 /**
  * 搜索配置项。
@@ -438,6 +439,58 @@ class SearchParamsBuilder {
         }
 
         $this->searchParams->deepPaging->scrollId = $scrollId;
+    }
+
+    /**
+     * 设置abtest数据的sceneTag。
+     *
+     * SceneTag 为场景标签。
+     *
+     * @param String $sceneTag 设定abtest的sceneTag。
+     * @return void
+     */
+    public function setSceneTag($sceneTag) {
+        if ($this->searchParams->abtest == null) {
+            $this->searchParams->abtest = new Abtest();
+        }
+
+        $this->searchParams->abtest->sceneTag = $sceneTag;
+    }
+
+    /**
+     * 设置abtest数据的flowDivider。
+     *
+     * FlowDivider 为流量分配标识。
+     *
+     * @param String $flowDivider 设定abtest的flowDivider。
+     * @return void
+     */
+    public function setFlowDivider($flowDivider) {
+        if ($this->searchParams->abtest == null) {
+            $this->searchParams->abtest = new Abtest();
+        }
+
+        $this->searchParams->abtest->flowDivider = $flowDivider;
+    }
+
+    /**
+     * 设置终端用户的id，用来统计uv信息。
+     *
+     * @param String $userId 设定终端用户的id。
+     * @return void
+     */
+    public function setUserId($userId) {
+        $this->searchParams->userId = $userId;
+    }
+
+    /**
+     * 设置终端用户输入的query。
+     *
+     * @param String $rawQuery 设定终端用户输入的query。
+     * @return void
+     */
+    public function setRawQuery($rawQuery) {
+        $this->searchParams->rawQuery = $rawQuery;
     }
 
     /**

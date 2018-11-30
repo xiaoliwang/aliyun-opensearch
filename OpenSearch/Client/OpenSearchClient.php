@@ -34,8 +34,10 @@ class OpenSearchClient extends OpenSearch {
     const METHOD_PATCH = 'PATCH';
 
     const API_VERSION = '3';
-    const SDK_VERSION = '3.0.1';
     const API_TYPE = 'openapi';
+
+    const SDK_VERSION = '3.1.0';
+    const SDK_TYPE    = 'opensearch_sdk';
 
     private $debug = false;
 
@@ -230,6 +232,7 @@ class OpenSearchClient extends OpenSearch {
                     $params[$key] = $parameters[$key];
                 }
             }
+
             uksort($params,'strnatcasecmp');
             reset($params);
         }
