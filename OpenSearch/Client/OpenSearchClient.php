@@ -290,6 +290,9 @@ class OpenSearchClient extends OpenSearch {
         $session = curl_init($url);
         curl_setopt_array($session, $options);
         $response = curl_exec($session);
+        if ($response === false) {
+            throw new \Exception(curl_error($session), curl_errno($session));
+        }
         curl_close($session);
 
         $openSearchResult = new OpenSearchResult();
