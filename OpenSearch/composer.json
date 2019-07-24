@@ -10,7 +10,7 @@
             "email": "http://www.aliyun.com"
         }
     ],
-    "version": "v3.1.2",
+    "version": "v3.1.1",
     "require": {
 		"php": ">=5.3"
 	},
