@@ -26,6 +26,7 @@ use OpenSearch\Generated\Search\Config;
 use OpenSearch\Generated\Search\Constant;
 use OpenSearch\Generated\Search\Order;
 use OpenSearch\Generated\Search\Rank;
+use OpenSearch\Generated\Search\RankType;
 use OpenSearch\Generated\Search\SearchFormat;
 use OpenSearch\Generated\Search\SearchParams;
 use OpenSearch\Generated\Search\Sort;
@@ -106,6 +107,10 @@ class SearchParamsBuilder {
 
         if (isset($opts['secondRankName'])) {
             $this->setSecondRankName($opts['secondRankName']);
+        }
+
+        if (array_key_exists('secondRankType', $opts)) {
+            $this->setSecondRankType($opts['secondRankType']);
         }
 
         if (isset($opts['aggregate']) && isset($opts['aggregate']['groupKey'])) {
@@ -323,6 +328,16 @@ class SearchParamsBuilder {
      */
     public function setSecondRankName($secondRankName) {
         $this->searchParams->rank->secondRankName = $secondRankName;
+    }
+
+    /**
+     * 设置精排表达式类型。
+     *
+     * @param RankType $secondRankType 指定的精排表达式类型。
+     * @return void
+     */
+    public function setSecondRankType($secondRankType) {
+        $this->searchParams->rank->secondRankType = $secondRankType;
     }
 
     /**

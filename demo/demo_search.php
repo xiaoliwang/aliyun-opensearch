@@ -2,6 +2,7 @@
 require_once("Config.inc.php");
 
 use OpenSearch\Client\SearchClient;
+use OpenSearch\Generated\Search\RankType;
 use OpenSearch\Util\SearchParamsBuilder;
 
 $searchClient = new SearchClient($client);
@@ -43,6 +44,7 @@ $params->setCustomParam('c', 'd');
 
 //$params->setFirstRankName('dd');
 //$params->setSecondRankName('aa');
+$params->setSecondRankType(RankType::CAVA_SCRIPT);
 $params->setFetchFields(array('hid'));
 // $params->setScrollExpire('3m');
 // $params->setScrollId('eJx1UNtuwyAM/RrytiiBrkkfeOja9DcQS8zqlRAGRGr39TPZ1t06CQkbn4sPyuqYVD+HOAVpMMSEzkGIfZisxaFQ3+Zq1OF0E0SVVXD2KuEIsl5t6rathGj4al1o+Vj0cigMpP6oDIIdojwS62WGcJH95Aw+MbE/YmJiyyvGd2YKo87dc5wc9QGCdid2f4j4CguIUGs6iwRxBzB6tpnBeMO6hm22rF3leoHR7jTb32XXOI8U4yI/7veFiDgAhUCfcHH8nFpwNKuz3/UNKLOPGLNbJ1hbsZbfKL4I0aH3sKT7IQMjuKR8AIPnLCZ20Wtyr3r6dJLf65qJ7hZliunKYfyw0AgpHn6ncnqEP3H4f3HKsnwDGEWxaA==');

@@ -29,6 +29,7 @@ use OpenSearch\Util\SuggestParamsBuilder;
  *
  * 通过制定关键词、过滤条件搜索应用的下拉提示的结果。
  *
+ * @deprecated 请使用SuggestionClient代替
  */
 class SuggestClient implements OpenSearchSearcherServiceIf {
 

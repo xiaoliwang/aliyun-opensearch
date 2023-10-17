@@ -48,6 +48,15 @@ final class Order {
   );
 }
 
+final class RankType {
+  const EXPRESSION = 0;
+  const CAVA_SCRIPT = 1;
+  static public $__names = array(
+    0 => 'EXPRESSION',
+    1 => 'CAVA_SCRIPT',
+  );
+}
+
 class Config {
   static $_TSPEC;
 
@@ -731,12 +740,18 @@ class Rank {
    */
   public $firstRankName = null;
   /**
-   * 设置粗排表达式名称
+   * 设置精排表达式名称
    * 
    * 
    * @var string
    */
   public $secondRankName = null;
+  /**
+   * 设置精排表达式类型
+   * 
+   * @var int
+   */
+  public $secondRankType =   0;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -753,6 +768,10 @@ class Rank {
           'var' => 'secondRankName',
           'type' => TType::STRING,
           ),
+        7 => array(
+          'var' => 'secondRankType',
+          'type' => TType::I32,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -764,6 +783,9 @@ class Rank {
       }
       if (isset($vals['secondRankName'])) {
         $this->secondRankName = $vals['secondRankName'];
+      }
+      if (isset($vals['secondRankType'])) {
+        $this->secondRankType = $vals['secondRankType'];
       }
     }
   }
@@ -808,6 +830,13 @@ class Rank {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 7:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->secondRankType);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -834,6 +863,11 @@ class Rank {
     if ($this->secondRankName !== null) {
       $xfer += $output->writeFieldBegin('secondRankName', TType::STRING, 5);
       $xfer += $output->writeString($this->secondRankName);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->secondRankType !== null) {
+      $xfer += $output->writeFieldBegin('secondRankType', TType::I32, 7);
+      $xfer += $output->writeI32($this->secondRankType);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

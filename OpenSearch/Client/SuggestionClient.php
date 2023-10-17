@@ -20,49 +20,61 @@
 
 namespace OpenSearch\Client;
 
-use OpenSearch\Generated\Search\Config;
-use OpenSearch\Generated\Search\OpenSearchSearcherServiceIf;
-use OpenSearch\Generated\Search\SearchFormat;
-use OpenSearch\Generated\Search\SearchParams;
-use OpenSearch\Util\UrlParamsBuilder;
+use OpenSearch\Generated\Suggestion\SuggestionServiceIf;
+use OpenSearch\Generated\Suggestion\SuggestParams;
+use OpenSearch\Util\SuggestUrlParamsBuilder;
+use OpenSearch\Client\OpenSearchClient;
 
 /**
- * 应用搜索操作类。
+ * 应用下拉提示操作类。
  *
- * 通过制定关键词、过滤条件搜索应用结果。
+ * 通过制定关键词、过滤条件搜索应用的下拉提示的结果。
  *
  */
-class SearchClient implements OpenSearchSearcherServiceIf {
+class SuggestionClient implements SuggestionServiceIf
+{
+    const SUGGESTION_API_PATH = "/suggestions/%s/actions/search";
 
-    const SEARCH_API_PATH = '/apps/%s/search';
-
+    private $suggestionName;
     private $openSearchClient;
 
     /**
      * 构造方法。
      *
+     * @param string $suggestionName 下拉提示名称
      * @param \OpenSearch\Client\OpenSearchClient $openSearchClient 基础类，负责计算签名，和服务端进行交互和返回结果。
      * @return void
      */
-    public function __construct($openSearchClient) {
+    public function __construct(string $suggestionName, 
+                                OpenSearchClient $openSearchClient)
+    {
+        $this->suggestionName = $suggestionName;
         $this->openSearchClient = $openSearchClient;
     }
 
     /**
      * 执行搜索操作。
      *
-     * @param \OpenSearch\Generated\Search\SearchParams $searchParams 制定的搜索条件。
+     * @param \OpenSearch\Generated\Suggestion\SuggestParams $suggestParams 指定的查询条件
      * @return \OpenSearch\Generated\Common\OpenSearchResult OpenSearchResult类
      */
-    public function execute(SearchParams $searchParams) {
-        $path = self::getPath($searchParams);
-        
-        $builder = new UrlParamsBuilder($searchParams);
+    public function execute(SuggestParams $suggestParams)
+    {
+        $path = $this->getPath();
+        $builder = new SuggestUrlParamsBuilder($suggestParams);
         return $this->openSearchClient->get($path, $builder->getHttpParams());
     }
 
-    private static function getPath($searchParams) {
-        $appNames = isset($searchParams->config->appNames) ? implode(',', $searchParams->config->appNames) : '';
-        return sprintf(self::SEARCH_API_PATH, $appNames);
+    private function getPath()
+    {
+        return sprintf(self::SUGGESTION_API_PATH, $this->suggestionName);
+    }
+
+    /**
+     * @deprecated
+     */
+    public function search()
+    {
+        throw new \BadMethodCallException();
     }
 }

@@ -22,6 +22,7 @@ namespace OpenSearch\Util;
 
 use OpenSearch\Generated\Search\Constant;
 use OpenSearch\Generated\Search\DeepPaging;
+use OpenSearch\Generated\Search\RankType;
 use OpenSearch\Generated\Search\SearchType;
 
 class UrlParamsBuilder {
@@ -30,6 +31,7 @@ class UrlParamsBuilder {
     const FORMAT = 'format';
     const FIRST_RANK_NAME = 'first_rank_name';
     const SECOND_RANK_NAME = 'second_rank_name';
+    const SECOND_RANK_TYPE = 'second_rank_type';
     const SUMMARY = 'summary';
     const FETCH_FIELDS = 'fetch_fields';
     const QP = 'qp';
@@ -106,6 +108,13 @@ class UrlParamsBuilder {
         if (isset($searchParams->rank->secondRankName)) {
             $this->params[self::SECOND_RANK_NAME] = $searchParams->rank->secondRankName;
         }
+
+        if (isset($searchParams->rank->secondRankType)) {
+            $enumString = RankType::$__names[$searchParams->rank->secondRankType] ?: null;
+            if ($enumString) {
+                $this->params[self::SECOND_RANK_TYPE] = strtolower($enumString);
+            }
+        }
     }
 
     public function initFetchFields($searchParams) {
@@ -160,8 +169,20 @@ class UrlParamsBuilder {
     }
 
     public function initAbtest($searchParams) {
-        if (isset($searchParams->abtest) && isset($searchParams->abtest->sceneTag) && isset($searchParams->abtest->flowDivider)) {
-            $this->params[self::ABTEST] = sprintf("%s:%s,%s:%s", Constant::get('ABTEST_PARAM_SCENE_TAG'), $searchParams->abtest->sceneTag, Constant::get('ABTEST_PARAM_FLOW_DIVIDER'), $searchParams->abtest->flowDivider);
+        if (isset($searchParams->abtest)) {
+            $abtestParams = array();
+
+            if (isset($searchParams->abtest->sceneTag)) {
+                $abtestParams[] = sprintf("%s:%s", Constant::get('ABTEST_PARAM_SCENE_TAG'), $searchParams->abtest->sceneTag);
+            }
+
+            if (isset($searchParams->abtest->flowDivider)) {
+                $abtestParams[] = sprintf("%s:%s", Constant::get('ABTEST_PARAM_FLOW_DIVIDER'), $searchParams->abtest->flowDivider);
+            }
+
+            if (!empty($abtestParams)) {
+                $this->params[self::ABTEST] = implode(",", $abtestParams);
+            }
         }
     }
 
