@@ -24,6 +24,9 @@ use OpenSearch\Generated\Search\SearchParams;
 use OpenSearch\Generated\Search\Config;
 use OpenSearch\Generated\Search\Suggest;
 
+/**
+ * @deprecated 随着SuggestClient的废弃而失去了历史作用
+ */
 class SuggestParamsBuilder {
 
     public function __construct() {}

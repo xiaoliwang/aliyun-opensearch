@@ -48,6 +48,14 @@ class OpenSearch {
    * @var int
    */
   public $connectTimeout = null;
+  /**
+   * @var bool
+   */
+  public $expired = false;
+  /**
+   * @var string
+   */
+  public $securityToken = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -88,6 +96,14 @@ class OpenSearch {
           'var' => 'connectTimeout',
           'type' => TType::I32,
           ),
+        8 => array(
+          'var' => 'expired',
+          'type' => TType::BOOL,
+          ),
+        9 => array(
+          'var' => 'securityToken',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -111,6 +127,12 @@ class OpenSearch {
       }
       if (isset($vals['connectTimeout'])) {
         $this->connectTimeout = $vals['connectTimeout'];
+      }
+      if (isset($vals['expired'])) {
+        $this->expired = $vals['expired'];
+      }
+      if (isset($vals['securityToken'])) {
+        $this->securityToken = $vals['securityToken'];
       }
     }
   }
@@ -196,6 +218,20 @@ class OpenSearch {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 8:
+          if ($ftype == TType::BOOL) {
+            $xfer += $input->readBool($this->expired);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 9:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->securityToken);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -257,6 +293,16 @@ class OpenSearch {
       $xfer += $output->writeI32($this->connectTimeout);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->expired !== null) {
+      $xfer += $output->writeFieldBegin('expired', TType::BOOL, 8);
+      $xfer += $output->writeBool($this->expired);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->securityToken !== null) {
+      $xfer += $output->writeFieldBegin('securityToken', TType::STRING, 9);
+      $xfer += $output->writeString($this->securityToken);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -268,7 +314,7 @@ final class Constant extends \Thrift\Type\TConstant {
   static protected $VERSION;
 
   static protected function init_VERSION() {
-    return "3.1.0";
+    return "3.4.0";
   }
 }
 

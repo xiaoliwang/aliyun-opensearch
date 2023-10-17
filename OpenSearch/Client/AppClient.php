@@ -29,7 +29,8 @@ use OpenSearch\Generated\Common\Pageable;
  * 管理应用的基本信息，包含创建应用(save)、修改应用(updateById)、删除应用(removeById)
  * 、获取应用的基本详情(getById)、获取应用列表(listAll)、给应用导入全量数据(reindexById)
  * 等方法。
- *
+ * 
+ * @deprecated
  */
 class AppClient implements AppServiceIf {
 

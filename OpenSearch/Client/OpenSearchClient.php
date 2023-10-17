@@ -36,7 +36,7 @@ class OpenSearchClient extends OpenSearch {
     const API_VERSION = '3';
     const API_TYPE = 'openapi';
 
-    const SDK_VERSION = '3.1.0';
+    const SDK_VERSION = '3.4.1';
     const SDK_TYPE    = 'opensearch_sdk';
 
     private $debug = false;
@@ -71,6 +71,10 @@ class OpenSearchClient extends OpenSearch {
 
         if (isset($options['connectTimeout'])) {
             $args['connectTimeout'] = $options['connectTimeout'];
+        }
+
+        if (isset($options['securityToken'])) {
+            $args['securityToken'] = $options['securityToken'];
         }
 
         if (isset($options['debug'])) {
@@ -157,6 +161,10 @@ class OpenSearchClient extends OpenSearch {
         $items['opensearch_headers'] = array();
         $items['content_md5'] = "";
         $items['opensearch_headers']['X-Opensearch-Nonce'] = $this->_nonce();
+        if ($this->securityToken) {
+            $items['opensearch_headers']['X-Opensearch-Security-Token'] 
+                = $this->securityToken;
+        }
 
         if ($method != self::METHOD_GET) {
             if (!empty($body)) {
